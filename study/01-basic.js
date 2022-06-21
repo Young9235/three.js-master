@@ -29,7 +29,7 @@ class App {
         const height = this._divContainer.clientHeight;
         const camera = new THREE.PerspectiveCamera( 
             75, 
-            width / height, 
+            width / height,   
             0.1, 
             1000 
         );
