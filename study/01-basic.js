@@ -49,23 +49,43 @@ class App {
     }
 
     // 정육면체 형상 생성 - 3차원 모델 생성
-    _setupModule() {
-        const geometry = new THREE.BoxGeometry( 1, 1, 1 );      // 박스만들기 - 가로, 세로, 깊이
-        const material = new THREE.MeshBasicMaterial({ color: 0x44a88 });      // 파랑색 계열의 박스
-        //const material = new THREE.LineBasicMaterial( { color: 0x0000ff } );
-        const points = [];
-        // points.push( new THREE.Vector3( -10, 0, 0 ) );
-        // points.push( new THREE.Vector3( 0, 10, 0 ) );
-        // points.push( new THREE.Vector3( 10, 0, 0 ) );
-        // points.push( new THREE.Vector3( 0, 0, 10 ) );
+    // _setupModule() {
+    //     const geometry = new THREE.BoxGeometry( 1, 1, 1 );      // 박스만들기 - 가로, 세로, 깊이
+    //     const material = new THREE.MeshBasicMaterial({ color: 0x44a88 });      // 파랑색 계열의 박스
+    //     //const material = new THREE.LineBasicMaterial( { color: 0x0000ff } );
+    //     const points = [];
+    //     // points.push( new THREE.Vector3( -10, 0, 0 ) );
+    //     // points.push( new THREE.Vector3( 0, 10, 0 ) );
+    //     // points.push( new THREE.Vector3( 10, 0, 0 ) );
+    //     // points.push( new THREE.Vector3( 0, 0, 10 ) );
         
-        //const geometry = new THREE.BufferGeometry().setFromPoints( points );
+    //     //const geometry = new THREE.BufferGeometry().setFromPoints( points );
 
 
-        const line = new THREE.Mesh( geometry, material );
+    //     const line = new THREE.Mesh( geometry, material );
 
-        this._scene.add(line);
-        this._cube = line;
+    //     this._scene.add(line);
+    //     this._cube = line;
+    // }
+
+    _setupModule() {
+        const geometry = new THREE.BoxGeometry( 2,2,2 );      // 박스만들기 - 가로, 세로, 깊이
+        const fillMeterial = new THREE.MeshPhongMaterial({ color:0x515151 });
+        const cube = new THREE.Mesh( geometry, fillMeterial );
+
+        // 라인타입의 오브젝트 생성 WireframeGeometry 모든 외각선
+        const lineMeterial = new THREE.LineBasicMaterial({ color:0xffff00 });
+        const line = new THREE.LineSegments(
+            new THREE.WireframeGeometry(geometry), lineMeterial
+        );
+        
+        // 하나의 오브젝트로 묶기 위한 그룸으로 셋팅
+        const group = new THREE.Group();
+        group.add(cube);
+        group.add(line);
+
+        this._scene.add(group);
+        this._cube = group;
     }
 
     resize() {
