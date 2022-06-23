@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Display buildings in 3D</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+    <script type="text/javascript" src="http://map.vworld.kr/js/webglMapInit.js.do?version=2.0&apiKey=6EBFBA1E-941D-37B4-B919-1EFC709E0D02"></script>
+</head>
+<body>
+    <div id="vmap" style="width:99%;height:600px;left:0px;top:0px"></div>
+    <script>
+        var map;
+        /* begin -------- 맵 초기화 코드 --------- */
+        function vwmap() {
+            var mapOptions = new vw.MapOptions(
+                    vw.BasemapType.GRAPHIC,
+                    "",
+                    vw.DensityType.FULL,
+                    vw.DensityType.BASIC,
+                    false,
+                    new vw.CameraPosition(
+                            new vw.CoordZ(126.921883, 37.524370, 482400),  
+                            new vw.Direction(0, -90, 0)
+                    ),
+                    new vw.CameraPosition(
+                            new vw.CoordZ(126.921883, 37.524370, 2982400),  
+                            new vw.Direction(0, -90, 0)
+                    )
+                );
+        
+            map = new vw.Map("vmap", mapOptions);
+        }
+        
+        // 웹지엘 지도 호출.
+        vwmap(); 
+        
+        /* end -------- 맵 초기화 코드 --------- */
+        
+        function flyHome() {
+            if ( map != null ) {
+                vw.NavigationZoom.initHome();
+                console.log("이동 :");
+            }
+        }
+    </script>
+</body>
+</html>
