@@ -17,13 +17,36 @@ class App {
 
         this._setupCamera();
         this._setupLight();
-        this._setupModel();
         this._setupControls();
+        this._setUpVideo();
 
         window.onresize = this.resize.bind(this);
         this.resize();
 
         requestAnimationFrame(this.render.bind(this));
+    }
+
+    _setUpVideo() {
+        const video = document.createElement("video");
+
+        if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            const constraints = {
+                video : {width:1280, height: 720}
+            };
+            navigator.mediaDevices.getUserMedia(constraints).then(stream => {
+                video.srcObject = stream;
+                video.play();
+
+                const videoTexture = new THREE.VideoTexture(video);
+                this._videoTexture = videoTexture;
+
+                this._setupModel();
+            }).catch (error => {
+                console.error('카메라에 접근할 수 없습니다.', error);
+            });
+        } else {
+            console.log('MediaDevices 인터페이스 사용불가');
+        }
     }
 
     _setupControls() {
@@ -33,7 +56,10 @@ class App {
     _setupModel() {
         const geometry = new THREE.BoxGeometry(1, 1, 1);
 
-        const material = new THREE.MeshPhongMaterial({color: 0x44a88});
+        const material = new THREE.MeshPhongMaterial({
+            //color: 0x44a88,
+            map: this._videoTexture
+        });
 
         const cube = new THREE.Mesh(geometry, material);
         this._scene.add(cube);
